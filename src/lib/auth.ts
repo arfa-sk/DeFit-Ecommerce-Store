@@ -5,13 +5,17 @@ const ONE_DAY_SECONDS = 60 * 60 * 24;
 
 export function setAdminAuthCookie(res: NextApiResponse) {
   const expires = new Date(Date.now() + ONE_DAY_SECONDS * 1000);
-  const cookie = `${COOKIE_NAME}=1; Path=/; HttpOnly; SameSite=Lax; Max-Age=${ONE_DAY_SECONDS}; Expires=${expires.toUTCString()}; Secure`;
+  const isProd = process.env.NODE_ENV === 'production';
+  const secure = isProd ? '; Secure' : '';
+  const cookie = `${COOKIE_NAME}=1; Path=/; HttpOnly; SameSite=Lax; Max-Age=${ONE_DAY_SECONDS}; Expires=${expires.toUTCString()}${secure}`;
   res.setHeader('Set-Cookie', cookie);
 }
 
 export function clearAdminAuthCookie(res: NextApiResponse) {
   const expires = new Date(0);
-  const cookie = `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Expires=${expires.toUTCString()}; Secure`;
+  const isProd = process.env.NODE_ENV === 'production';
+  const secure = isProd ? '; Secure' : '';
+  const cookie = `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Expires=${expires.toUTCString()}${secure}`;
   res.setHeader('Set-Cookie', cookie);
 }
 

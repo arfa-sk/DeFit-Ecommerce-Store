@@ -76,12 +76,12 @@ const HomePage = ({ featuredProducts }: HomePageProps) => {
             {/* Right Content - Hero Image */}
             <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] animate-fade-in-right" style={{animationDelay: '0.3s'}}>
               <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
-                <Image
+        <Image
                   src="https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                   alt="Fashion Model"
-                  fill
+          fill
                   className="object-cover"
-                  priority
+          priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
@@ -126,7 +126,7 @@ const HomePage = ({ featuredProducts }: HomePageProps) => {
             >
               View All Products
               <ChevronRightIcon className="ml-2 sm:ml-3 h-4 sm:h-5 lg:h-6 w-4 sm:w-5 lg:w-6 group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
+          </Link>
           </div>
         </div>
       </section>

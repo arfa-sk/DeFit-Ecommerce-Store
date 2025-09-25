@@ -54,6 +54,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(400).json({ message: `Invalid status provided. Must be one of: ${validStatuses.join(', ')}` });
         }
 
+        // Simple status update without status_history for now
+        // This avoids network issues with complex queries
         const { data, error } = await supabaseAdmin
           .from('orders')
           .update({ status: status as OrderStatus })

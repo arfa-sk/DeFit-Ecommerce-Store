@@ -93,16 +93,16 @@ const AdminProductsPage = () => {
 
   return (
     <AdminLayout>
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-5xl font-black text-black">Product Management</h1>
-          <button 
-            onClick={handleAddProduct} 
-            className="inline-flex items-center px-8 py-4 bg-black text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group text-lg"
-          >
-            <PlusIcon className="h-6 w-6 mr-3 group-hover:scale-110 transition-transform duration-300" />
-            Add New Product
-          </button>
-        </div>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-black">Product Management</h1>
+                <button
+                  onClick={handleAddProduct}
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 md:px-8 md:py-4 bg-black text-white font-bold rounded-xl md:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                >
+                  <PlusIcon className="h-5 w-5 md:h-6 md:w-6 mr-2 md:mr-3" />
+                  Add New Product
+                </button>
+      </div>
 
       {loading && <LoadingSpinner />}
       {error && <p className="text-error text-center text-xl my-8">{error}</p>}
@@ -114,35 +114,76 @@ const AdminProductsPage = () => {
       )}
 
       {!loading && !error && products.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <>
+                {/* Mobile cards */}
+                <div className="grid grid-cols-1 gap-4 md:hidden">
+                  {products.map((product) => (
+                    <div key={product.id} className="bg-white p-4 rounded-2xl shadow-lg border border-gray-200 flex items-center gap-4">
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+                        <Image
+                          src={product.images[0] || 'https://images.pexels.com/photos/1037993/pexels-photo-1037993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}
+                          alt={product.name}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-black font-semibold truncate">{product.name}</p>
+                        <p className="text-gray-500 text-sm capitalize">{product.category}</p>
+                        <div className="mt-2 flex items-center justify-between">
+                          <span className="text-yellow-500 font-bold">{formatCurrency(product.price)}</span>
+                          <span className="text-gray-600 text-sm">Stock: {product.stock}</span>
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <button 
+                            onClick={() => handleEditProduct(product)}
+                            className="flex-1 px-3 py-2 bg-black text-white rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors duration-200"
+                          >
+                            Edit
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteProduct(product.id)}
+                            className="px-3 py-2 bg-red-50 text-red-700 rounded-xl text-sm font-semibold hover:bg-red-100 transition-colors duration-200"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop table */}
+                <div className="hidden md:block bg-white rounded-2xl shadow-lg border border-gray-200 overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Image
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Category
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Price
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stock
                 </th>
-                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200">
               {products.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50 transition-colors duration-200">
+                        <tr key={product.id} className="hover:bg-gray-50 transition-colors duration-200">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="relative w-16 h-16 rounded-md overflow-hidden border border-gray-200">
+                            <div className="relative w-16 h-16 rounded-md overflow-hidden border border-gray-200">
                       <Image
                         src={product.images[0] || 'https://images.pexels.com/photos/1037993/pexels-photo-1037993.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}
                         alt={product.name}
@@ -152,32 +193,32 @@ const AdminProductsPage = () => {
                       />
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-black font-medium">
+                          <td className="px-6 py-4 whitespace-nowrap text-black font-medium">
                     {product.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-600 capitalize">
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-600 capitalize">
                     {product.category}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-yellow-500 font-bold">
+                          <td className="px-6 py-4 whitespace-nowrap text-yellow-500 font-bold">
                     {formatCurrency(product.price)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-600">
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                     {product.stock}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end space-x-2">
-                      <button 
-                        onClick={() => handleEditProduct(product)}
-                        className="p-2 text-gray-600 hover:text-black hover:bg-gray-100 rounded-lg transition-all duration-300"
-                      >
+                              <button 
+                                onClick={() => handleEditProduct(product)}
+                                className="p-2 text-gray-600 hover:text-black hover:bg-gray-100 rounded-lg transition-all duration-300"
+                              >
                         <PencilIcon className="h-4 w-4" />
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteProduct(product.id)}
-                        className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-300"
-                      >
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteProduct(product.id)}
+                                className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-300"
+                              >
                         <TrashIcon className="h-4 w-4" />
-                      </button>
+                              </button>
                     </div>
                   </td>
                 </tr>
@@ -185,6 +226,7 @@ const AdminProductsPage = () => {
             </tbody>
           </table>
         </div>
+              </>
       )}
     </AdminLayout>
   );

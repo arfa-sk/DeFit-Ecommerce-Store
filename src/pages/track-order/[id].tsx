@@ -10,6 +10,24 @@ interface Props {
 }
 
 export default function TrackOrderDetails({ order }: Props) {
+  const copyId = async (text: string) => {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+    } catch {}
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    } catch {}
+  };
   if (!order) {
     return (
       <div className="min-h-screen py-8 sm:py-12 md:py-16">
@@ -44,8 +62,8 @@ export default function TrackOrderDetails({ order }: Props) {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <button 
-                onClick={() => navigator.clipboard.writeText(order.id.slice(0, 8).toUpperCase())}
+                  <button 
+                    onClick={() => copyId(order.id.slice(0, 8).toUpperCase())}
                 className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors duration-200"
               >
                 Copy ID

@@ -294,7 +294,7 @@ const AdminOrdersPage = () => {
           </div>
         </div>
 
-        {loading && <LoadingSpinner />}
+      {loading && <LoadingSpinner />}
         {error && (
           <div className="p-4 bg-red-100 text-red-800 rounded-xl text-center my-8">
             <p className="text-lg">{error}</p>
@@ -307,21 +307,21 @@ const AdminOrdersPage = () => {
             {filters.search && (
               <p className="text-sm mt-2">Try adjusting your search or filters.</p>
             )}
-          </div>
-        )}
+        </div>
+      )}
 
         {!loading && !error && filteredOrders.length > 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredOrders.map((order) => (
-              <AdminOrderCard
-                key={order.id}
-                order={order}
-                onUpdateStatus={handleUpdateOrderStatus}
-                loading={updatingOrderId === order.id}
-              />
-            ))}
-          </div>
-        )}
+            <AdminOrderCard
+              key={order.id}
+              order={order}
+              onUpdateStatus={handleUpdateOrderStatus}
+              loading={updatingOrderId === order.id}
+            />
+          ))}
+        </div>
+      )}
       </div>
     </AdminLayout>
   );
