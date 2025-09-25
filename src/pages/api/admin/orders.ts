@@ -54,11 +54,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(400).json({ message: `Invalid status provided. Must be one of: ${validStatuses.join(', ')}` });
         }
 
-        // Simple status update without status_history for now
-        // This avoids network issues with complex queries
+        // Get existing order to update status_history
+        const { data: existingOrder, error: fetchError } = await supabaseAdmin
+          .from('orders')
+          .select('status_history')
+          .eq('id', id as string)
+          .single();
+
+        if (fetchError || !existingOrder) {
+          console.error('Error fetching existing order for status update:', fetchError);
+          return res.status(404).json({ message: 'Order not found.' });
+        }
+
+        // Create new status update entry
+        const newStatusUpdate = {
+          status: status as OrderStatus,
+          updated_at: new Date().toISOString(),
+          updated_by: 'admin',
+          notes: `Status changed to ${status}`,
+        };
+
+        const updatedStatusHistory = existingOrder.status_history
+          ? [...existingOrder.status_history, newStatusUpdate]
+          : [newStatusUpdate];
+
         const { data, error } = await supabaseAdmin
           .from('orders')
-          .update({ status: status as OrderStatus })
+          .update({ 
+            status: status as OrderStatus,
+            status_history: updatedStatusHistory,
+            updated_at: new Date().toISOString()
+          })
           .eq('id', id as string)
           .select()
           .single();

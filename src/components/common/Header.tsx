@@ -49,8 +49,8 @@ const Header = () => {
               href="/track-order" 
               className="text-gray-700 hover:text-black font-medium transition-colors duration-300 text-base lg:text-lg"
             >
-              Track Order
-            </Link>
+            Track Order
+          </Link>
           </nav>
 
           {/* Right side icons */}
@@ -69,12 +69,12 @@ const Header = () => {
               className="relative p-2 sm:p-3 text-gray-700 hover:text-black transition-colors duration-300 hover:bg-gray-100 rounded-xl"
             >
               <ShoppingCartIcon className="h-5 sm:h-6 w-5 sm:w-6" />
-              {cartItemCount > 0 && (
+            {cartItemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-yellow-400 text-black text-xs font-bold rounded-full h-5 sm:h-6 w-5 sm:w-6 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </Link>
+                {cartItemCount}
+              </span>
+            )}
+          </Link>
 
             {/* Mobile menu button */}
             <button
@@ -160,8 +160,8 @@ const Header = () => {
                     {cartItemCount}
                   </span>
                 )}
-              </Link>
-            </nav>
+          </Link>
+        </nav>
           </div>
         )}
       </div>
